@@ -33,7 +33,7 @@ func bruteForce(arr []int, n int) int {
 		}
 	}
 	return -1
-	// TC = O(N2), where N = size of the array+1.
+	// TC = O(N^2), where N = size of the array+1.
 	// SC = O(1) as we are not using any extra space to solve this problem.
 }
 
@@ -89,6 +89,4 @@ func main() {
 	fmt.Println("ResultB: ", better(arr1, n))
 	fmt.Println("ResultO1: ", optimal1(arr1, n))
 	fmt.Println("ResultO2: ", optimal2(arr1, n))
-
-	// no brute force solution for this
 }
