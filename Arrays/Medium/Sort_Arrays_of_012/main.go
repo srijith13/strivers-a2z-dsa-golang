@@ -17,10 +17,57 @@ Given an array consisting of only 0s, 1s, and 2s. Write a program to in-place so
 	Output: [0]
 */
 
-// func bruteForce(arr []int) {
-// 	// TC = O(N^2), two loops.
-// 	// SC = O(1) as we are not using any extra space to solve this problem.
-// }
+func merge(arr []int, low, mid, high int) {
+	var temp []int
+	left, right := low, mid+1
+
+	//storing elements in the temporary array in a sorted manner
+	for left <= mid && right <= high {
+		if arr[left] <= arr[right] {
+			temp = append(temp, arr[left])
+			left++
+		} else {
+			temp = append(temp, arr[right])
+			right++
+		}
+	}
+
+	// if elements on the left half are still left
+	for left <= mid {
+		temp = append(temp, arr[left])
+		left++
+	}
+
+	//  if elements on the right half are still left
+	for right <= high {
+		temp = append(temp, arr[right])
+		right++
+	}
+
+	// transferring all elements from temporary to arr
+	for i := low; i <= high; i++ {
+		arr[i] = temp[i-low]
+	}
+
+}
+
+func mergeSort(arr []int, low, high int) {
+	if low >= high {
+		return
+	}
+	mid := (low + high) / 2
+	mergeSort(arr, low, mid)    // left half
+	mergeSort(arr, mid+1, high) // right half
+	merge(arr, low, mid, high)  // merging sorted halves
+}
+
+func bruteForce(arr []int) {
+
+	mergeSort(arr, 0, len(arr)-1)
+	// TC = O(nlogn)
+	// Reason: At each step, we divide the whole array, for that logn and we assume n steps are taken to get sorted array, so overall time complexity will be nlogn
+	// SC = O(n)  Reason: We are using a temporary array to store elements in sorted order.
+}
 
 func better(arr []int) {
 	// Since it has only 3 unique ints
@@ -72,9 +119,9 @@ func optimal(arr []int) {
 
 func main() {
 	arr := []int{2, 0, 2, 1, 1, 0}
-	// arr0 := arr
-	// bruteForce(arr0)
-	// fmt.Println("ResultBF: ", arr0) // Any kind of sort other than inbuile with TC = O(N logN)
+	arr0 := arr
+	bruteForce(arr0)
+	fmt.Println("ResultBF: ", arr0) // Any kind of sort other than inbuile with TC = O(N logN)
 	arr1 := arr
 	better(arr1)
 	fmt.Println("ResultB: ", arr1)
