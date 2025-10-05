@@ -6,7 +6,21 @@ import (
 )
 
 /*
-Given an integer array arr, find the contiguous subarray (containing at least one number) which has the largest sum and returns its sum and prints the subarray.
+Variety 1
+Given an integer array arr, find the contiguous subarray (containing at least one number) which has the largest sum and returns its sum.
+
+	Example 1:
+	Input: arr = [-2,1,-3,4,-1,2,1,-5,4]
+	Output: 6
+	Explanation: [4,-1,2,1] has the largest sum = 6.
+
+	Examples 2:
+	Input: arr = [1]
+	Output: 1
+	Explanation: Array has only one element and which is giving positive sum of 1.
+
+Variety 2
+Given an integer array arr, find the contiguous subarray (containing at least one number) which has the largest sum and returns the subarray.
 
 	Example 1:
 	Input: arr = [-2,1,-3,4,-1,2,1,-5,4]
@@ -80,9 +94,40 @@ func optimal(arr []int) int {
 	// SC = O(1) as we are not using any extra space.
 }
 
+// Kadane's Algorithm
+func optimal2(arr []int) []int {
+	var maxi, sum int = math.MinInt, 0
+	var start, ansStart, ansEnd int = 0, 0, 0
+	for i := 0; i < len(arr); i++ {
+		if sum == 0 {
+			start = i
+		}
+		sum += arr[i]
+		// Add this to others to get subarray
+		if sum > maxi {
+			maxi = sum
+			ansStart = start
+			ansEnd = i
+		}
+		if sum < 0 {
+			sum = 0
+		}
+	}
+
+	// To consider the sum of the empty subarray uncomment the following check:
+	// if maxi < 0 {
+	// maxi = 0
+	// }
+
+	return arr[ansStart : ansEnd+1]
+	// TC = O(N), where N = size of the given array.
+	// SC = O(1) as we are not using any extra space.
+}
+
 func main() {
 	arr := []int{-2, 1, -3, 4, -1, 2, 1, -5, 4}
 	fmt.Println("ResultBF: ", bruteForce(arr))
 	fmt.Println("ResultB: ", better(arr))
 	fmt.Println("ResultO: ", optimal(arr))
+	fmt.Println("ResultO1: ", optimal2(arr))
 }
