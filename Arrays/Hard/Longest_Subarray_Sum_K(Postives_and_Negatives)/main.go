@@ -13,9 +13,9 @@ Given an array and a sum k, we need to print the length of the longest subarray 
 	Explanation: The longest subarray with sum 5 is {2, 3}. And its length is 2.
 
 	Example 2:
-	Input Format: N = 5, k = 10, array[] = {2,3,5,1,9}
+	Input Format: N = 3, k = 1, array[] = {-1, 1, 1}
 	Result: 3
-	Explanation: The longest subarray with sum 10 is {2, 3, 5}. And its length is 3.
+	Explanation: The longest subarray with sum 1 is {-1, 1, 1}. And its length is 3.
 */
 
 func bruteForce(arr []int, kVal int) int {
@@ -41,7 +41,7 @@ func bruteForce(arr []int, kVal int) int {
 	// SC = O(1) as we are not using any extra space.
 }
 
-func bruteForce2(arr []int, kVal int) int {
+func better(arr []int, kVal int) int {
 
 	var longest int = 0
 	for i := 0; i < len(arr); i++ {
@@ -60,7 +60,7 @@ func bruteForce2(arr []int, kVal int) int {
 	// SC = O(1) as we are not using any extra space.
 }
 
-func better(arr []int, kVal int) int {
+func optimal(arr []int, kVal int) int {
 	longest, sum := 0, 0
 	preSum := make(map[int]int)
 
@@ -87,41 +87,10 @@ func better(arr []int, kVal int) int {
 	// SC = O(N) as we are using a map data structure.
 }
 
-func optimal(arr []int, kVal int) int {
-	// Only applicable for positive and zero values in array
-	if len(arr) == 0 {
-		return 0
-	}
-	longest, sum := 0, arr[0]
-	right, left := 0, 0
-	for right < len(arr) {
-		for left <= right && sum > kVal {
-			sum -= arr[left]
-			left++
-		}
-		if sum == kVal {
-			longest = max(longest, right-left+1)
-		}
-		right++
-		if right < len(arr) {
-			sum += arr[right]
-		}
-	}
-
-	return longest
-	// TC =  O(2*N), where N = size of the given array.
-	// Reason: The outer while loop i.e. the right pointer can move up to index n-1(the last index).
-	// Now, the inner while loop i.e. the left pointer can move up to the right pointer at most. \
-	// So, every time the inner loop does not run for n times rather it can run for n times in total. So, the time complexity will be O(2*N) instead of O(N2).
-
-	// SC = O(1) as we are not using any extra space.
-}
-
 func main() {
-	arr := []int{2, 3, 5, 1, 9}
-	k := 10
+	arr := []int{-1, 1, 1}
+	k := 1
 	fmt.Println("ResultBF: ", bruteForce(arr, k))
-	fmt.Println("ResultBF2: ", bruteForce2(arr, k))
 	fmt.Println("ResultB: ", better(arr, k))
 	fmt.Println("ResultO: ", optimal(arr, k))
 }
